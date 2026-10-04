@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belajar Uslub Bahasa Arab</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    padding:15px;
+    background:#f1f6f3;
+    font-family:Arial,sans-serif;
+    color:#222;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+header{
+    background:#087a43;
+    color:white;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
+
+header h1{
+    margin:0 0 7px;
+    font-size:25px;
+}
+
+header p{
+    margin:0;
+}
+
+.tabs{
+    display:flex;
+    gap:7px;
+    margin:15px 0;
+}
+
+.tabs button{
+    flex:1;
+    padding:12px 5px;
+    border:0;
+    border-radius:9px;
+    background:white;
+    color:#087a43;
+    font-weight:bold;
+}
+
+.tabs button.active{
+    background:#087a43;
+    color:white;
+}
+
+.panel{
+    display:none;
+}
+
+.panel.active{
+    display:block;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 3px 12px #0001;
+}
+
+.counter{
+    text-align:center;
+    color:#777;
+    margin-bottom:15px;
+}
+
+.arabic{
+    direction:rtl;
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    line-height:1.8;
+    margin:10px 0;
+}
+
+.meaning{
+    text-align:center;
+    color:#087a43;
+    font-size:21px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.example{
+    background:#f5faf7;
+    border-radius:10px;
+    padding:12px;
+    margin-top:10px;
+}
+
+.example-arabic{
+    direction:rtl;
+    text-align:right;
+    font-size:22px;
+    line-height:1.8;
+}
+
+.translation{
+    color:#666;
+    margin-top:5px;
+}
+
+.buttons{
+    display:flex;
+    gap:8px;
+    margin-top:18px;
+}
+
+button{
+    cursor:pointer;
+}
+
+.buttons button,
+.main-button{
+    flex:1;
+    padding:13px;
+    border:0;
+    border-radius:9px;
+    background:#087a43;
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+}
+
+.back{
+    background:#ddd!important;
+    color:#222!important;
+}
+
+.answer{
+    background:#eaf6ee;
+    border-radius:10px;
+    padding:15px;
+    margin-top:15px;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    color:#087a43;
+}
+
+.hidden{
+    display:none;
+}
+
+.options label{
+    display:block;
+    padding:12px;
+    margin:8px 0;
+    background:#f5f5f5;
+    border-radius:9px;
+}
+
+.options label:hover{
+    background:#eaf5ef;
+}
+
+.options input{
+    margin-right:8px;
+}
+
+.result{
+    text-align:center;
+    background:#eaf6ee;
+    border-radius:12px;
+    padding:20px;
+    margin-top:15px;
+}
+
+.score{
+    font-size:32px;
+    font-weight:bold;
+    color:#087a43;
+    margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>📚 Belajar Uslub Bahasa Arab</h1>
+    <p>Mutalaah → Ngelalar → Tes Hafalan</p>
+</header>
+
+<div class="tabs">
+    <button id="tab1" class="active" onclick="openTab(1)">
+        📖 Mutalaah
+    </button>
+
+    <button id="tab2" onclick="openTab(2)">
+        🧠 Ngelalar
+    </button>
+
+    <button id="tab3" onclick="openTab(3)">
+        📝 Tes
+    </button>
+</div>
+
+
+<!-- ================= MUTALAAH ================= -->
+
+<div id="panel1" class="panel active">
+
+<div class="card">
+
+<div class="counter" id="counterMutalaah"></div>
+
+<div class="arabic" id="arabicMutalaah"></div>
+
+<div class="meaning" id="meaningMutalaah"></div>
+
+<div id="examples"></div>
+
+<div class="buttons">
+
+<button class="back" onclick="previousMaterial()">
+← Sebelumnya
+</button>
+
+<button onclick="nextMaterial()">
+Berikutnya →
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= NGELALAR ================= -->
+
+<div id="panel2" class="panel">
+
+<div class="card">
+
+<div class="counter" id="counterNgelalar"></div>
+
+<p style="text-align:center;color:#777">
+Coba ingat artinya dulu sebelum melihat jawaban.
+</p>
+
+<div class="arabic" id="arabicNgelalar"></div>
+
+<button class="main-button" onclick="showAnswer()">
+👁️ Lihat Jawaban
+</button>
+
+<div id="answerNgelalar" class="answer hidden"></div>
+
+<div class="buttons">
+
+<button class="back" onclick="previousLalar()">
+← Sebelumnya
+</button>
+
+<button onclick="nextLalar()">
+Berikutnya →
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= TES ================= -->
+
+<div id="panel3" class="panel">
+
+<div class="card">
+
+<div class="counter" id="counterTes"></div>
+
+<div id="question"></div>
+
+<div id="result" class="result hidden"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   DATA USLUB
+===================================================== */
+
+const data = [
+
+{
+arabic:"بَادِيَ ذِي بَدْءٍ",
+meaning:"Pertama-tama",
+examples:[
+["بَادِيَ ذِي بَدْءٍ، أَشْكُرُكُمْ.","Pertama-tama, saya berterima kasih kepada kalian."],
+["بَادِيَ ذِي بَدْءٍ، اِسْمَعُونِي.","Pertama-tama, dengarkan saya."],
+["بَادِيَ ذِي بَدْءٍ، سَلَامٌ عَلَيْكُمْ.","Pertama-tama, assalamu'alaikum."]
+]
+},
+
+{
+arabic:"إِحْدَاهُنَّ / إِحْدَاهُمْ",
+meaning:"Salah satunya",
+examples:[
+["إِحْدَاهُنَّ مَرْيَمُ.","Salah satunya Maryam."],
+["إِحْدَاهُمْ أَحْمَدُ.","Salah satunya Ahmad."],
+["إِحْدَاهُنَّ هَذِهِ.","Salah satunya ini."]
+]
+},
+
+{
+arabic:"يُسَاوِي",
+meaning:"Sama dengan",
+examples:[
+["شَهَادَتُهُ تُسَاوِي شَهَادَتَيْنِ.","Kesaksiannya sama dengan dua kesaksian."],
+["هَذَا يُسَاوِي ذَاكَ.","Ini sama dengan itu."],
+["وَاحِدٌ يُسَاوِي وَاحِدًا.","Satu sama dengan satu."]
+]
+},
+
+{
+arabic:"عَلَى الْإِطْلَاقِ",
+meaning:"Sama sekali",
+examples:[
+["لَا أَعْرِفُهُ عَلَى الْإِطْلَاقِ.","Saya sama sekali tidak mengenalnya."],
+["لَيْسَ صَحِيحًا عَلَى الْإِطْلَاقِ.","Sama sekali tidak benar."],
+["لَا يَسْتَحِقُّ عَلَى الْإِطْلَاقِ.","Sama sekali tidak pantas."]
+]
+},
+
+{
+arabic:"قَصَّ عَلَى",
+meaning:"Sambil (menceritakan)",
+examples:[
+["قَصَّ عَلَى حَيَاتِهِ بَاكِيًا.","Ia menceritakan kehidupannya sambil menangis."],
+["قَصَّ عَلَى قِصَّتَهُ.","Ia menceritakan kisahnya."],
+["قَصَّ عَلَيَّ حُلْمَهُ.","Ia menceritakan mimpinya kepadaku."]
+]
+},
+
+{
+arabic:"مَا دُمْتَ",
+meaning:"Selagi",
+examples:[
+["مَا دُمْتَ صَغِيرًا اِدْرُسْ.","Selagi kamu masih kecil, belajarlah."],
+["مَا دُمْتَ مَعِي لَا أَخَافُ.","Selagi kamu bersamaku, aku tidak takut."],
+["لَا تُؤَجِّلْ مَا دُمْتَ قَادِرًا.","Jangan menunda selagi kamu mampu."]
+]
+},
+
+{
+arabic:"فَضْلًا عَنْ",
+meaning:"Selain itu",
+examples:[
+["هِيَ جَمِيلَةٌ فَضْلًا عَنْ ذَلِكَ مُتَدَيِّنَةٌ.","Dia cantik, selain itu dia juga taat."],
+["هُوَ ذَكِيٌّ فَضْلًا عَنْ كَوْنِهِ مُجْتَهِدٌ.","Dia pintar, selain itu dia rajin."],
+["هُوَ غَنِيٌّ فَضْلًا عَنْ كَرَمِهِ.","Dia kaya, selain itu dia dermawan."]
+]
+},
+
+{
+arabic:"دَائِمًا",
+meaning:"Selalu",
+examples:[
+["أَنَا أَشْتَاقُ إِلَيْكَ دَائِمًا.","Aku selalu merindukanmu."],
+["أَذْكُرُ رَبِّي دَائِمًا.","Aku selalu mengingat Tuhanku."],
+["هُوَ يَأْتِي دَائِمًا مُتَأَخِّرًا.","Dia selalu datang terlambat."]
+]
+},
+
+{
+arabic:"بَعْدَ",
+meaning:"Selama",
+examples:[
+["اِلْتَقَيْنَا بَعْدَ عَشْرِ سَنَوَاتٍ.","Kami bertemu setelah sepuluh tahun."],
+["بَعْدَ سَاعَةٍ سَأَعُودُ.","Setelah satu jam aku akan kembali."],
+["بَعْدَ قَلِيلٍ نَلْتَقِي.","Sebentar lagi kita bertemu."]
+]
+},
+
+{
+arabic:"مِنَ الْمُسْتَحْسَنِ",
+meaning:"Sebaiknya",
+examples:[
+["مِنَ الْمُسْتَحْسَنِ أَلَّا نُجَادِلَ.","Sebaiknya kita tidak berdebat."],
+["مِنَ الْمُسْتَحْسَنِ أَنْ تَسْكُتَ.","Sebaiknya kamu diam."],
+["مِنَ الْمُسْتَحْسَنِ أَنْ تَنَامَ.","Sebaiknya kamu tidur."]
+]
+},
+
+{
+arabic:"قَبْلَ هَذَا",
+meaning:"Sebelum ini",
+examples:[
+["سَبَقَ أَنْ جِئْتُ قَبْلَ هَذَا.","Saya pernah datang sebelum ini."],
+["مَا رَأَيْتُهُ قَبْلَ هَذَا.","Saya belum pernah melihatnya sebelum ini."],
+["لَمْ أَسْمَعْهُ قَبْلَ هَذَا.","Saya belum pernah mendengarnya sebelum ini."]
+]
+},
+
+{
+arabic:"قَبْلَ ذَلِكَ",
+meaning:"Sebelum itu",
+examples:[
+["سَجِّلْ أَوَّلًا قَبْلَ ذَلِكَ.","Catatlah terlebih dahulu sebelum itu."],
+["تَوَضَّأْ قَبْلَ ذَلِكَ.","Berwudhulah sebelum itu."],
+["فَكِّرْ قَبْلَ ذَلِكَ.","Pikirkan sebelum itu."]
+]
+},
+
+{
+arabic:"فِي وَقْتٍ سَابِقٍ",
+meaning:"Sebelumnya",
+examples:[
+["دَرَسْنَا فِي وَقْتٍ سَابِقٍ.","Kami telah belajar sebelumnya."],
+["اِلْتَقَيْنَا فِي وَقْتٍ سَابِقٍ.","Kami pernah bertemu sebelumnya."],
+["تَعَلَّمْنَا هَذَا سَابِقًا.","Kami telah mempelajari ini sebelumnya."]
+]
+},
+
+{
+arabic:"فِي الْحَقِيقَةِ",
+meaning:"Sebenarnya",
+examples:[
+["مَا الَّذِي حَدَثَ فِي الْحَقِيقَةِ؟","Apa yang sebenarnya terjadi?"],
+["فِي الْحَقِيقَةِ أَنَا لَا أَعْرِفُ.","Sebenarnya saya tidak tahu."],
+["فِي الْحَقِيقَةِ هُوَ طَيِّبٌ.","Sebenarnya dia baik."]
+]
+},
+
+{
+arabic:"اِقْتَرَبَ أَنْ",
+meaning:"Sebentar lagi",
+examples:[
+["اِقْتَرَبَ أَنْ يَنْتَهِيَ الْوَقْتُ.","Waktu sebentar lagi habis."],
+["اِقْتَرَبَ أَنْ يَأْتِيَ.","Dia sebentar lagi datang."],
+["اِقْتَرَبَ أَنْ تُمْطِرَ.","Sebentar lagi turun hujan."]
+]
+},
+
+{
+arabic:"فِي أَسْرَعِ وَقْتٍ",
+meaning:"Secepatnya",
+examples:[
+["أَنْهَيْتُهُ فِي أَسْرَعِ وَقْتٍ.","Aku menyelesaikannya secepatnya."],
+["تَعَالَ فِي أَسْرَعِ وَقْتٍ.","Datanglah secepatnya."],
+["سَأَعُودُ فِي أَسْرَعِ وَقْتٍ.","Aku akan kembali secepatnya."]
+]
+},
+
+{
+arabic:"كَانَ مِنَ الْمُفْتَرَضِ",
+meaning:"Seharusnya",
+examples:[
+["كَانَ هُوَ الْفَائِزَ.","Seharusnya dia yang menang."],
+["كَانَ يَجِبُ أَنْ تَأْتِيَ.","Seharusnya kamu datang."],
+["كَانَ عَلَيْكَ أَنْ تَدْرُسَ.","Seharusnya kamu belajar."]
+]
+},
+
+{
+arabic:"كَمَا جَرَتِ الْعَادَةُ",
+meaning:"Seperti biasa",
+examples:[
+["كَمَا جَرَتِ الْعَادَةُ، اِلْتَقَيْنَا يَوْمَ الْعِيدِ.","Seperti biasa, kami bertemu pada hari raya."],
+["كَمَا جَرَتِ الْعَادَةُ، نَامَ مُبَكِّرًا.","Seperti biasa, dia tidur lebih awal."],
+["جَاءَ كَمَا جَرَتِ الْعَادَةُ.","Dia datang seperti biasa."]
+]
+},
+
+{
+arabic:"مِثْلُ هَذَا",
+meaning:"Seperti ini",
+examples:[
+["مُشْكِلَةٌ مِثْلُ هَذِهِ لَا يُحَلُّ سَرِيعًا.","Masalah seperti ini tidak cepat diselesaikan."],
+["كِتَابٌ مِثْلُ هَذَا مُفِيدٌ.","Buku seperti ini bermanfaat."],
+["يَوْمٌ مِثْلُ هَذَا جَمِيلٌ.","Hari seperti ini indah."]
+]
+},
+
+{
+arabic:"يَبْدُو أَنَّ",
+meaning:"Sepertinya",
+examples:[
+["يَبْدُو أَنَّهُ مَرِيضٌ.","Sepertinya dia sakit."],
+["يَبْدُو أَنَّ الْمَطَرَ نَازِلٌ.","Sepertinya hujan turun."]
+]
+},
+
+{
+arabic:"كَأَنَّهُ هُوَ",
+meaning:"Sepertinya iya",
+examples:[
+["كَأَنَّهُ هُوَ الْفَائِزُ.","Sepertinya iya, dialah pemenangnya."],
+["كَأَنَّهُ هُوَ.","Sepertinya iya, dia."]
+]
+},
+
+{
+arabic:"بَعْدَ الْآنَ",
+meaning:"Setelah ini",
+examples:[
+["بَعْدَ الْآنَ سَأَحْفَظُ الْقُرْآنَ.","Setelah ini aku akan menghafal Al-Qur'an."],
+["بَعْدَ الْآنَ سَأَجْتَهِدُ.","Setelah ini aku akan bersungguh-sungguh."],
+["بَعْدَ الْآنَ لَا أَتَأَخَّرُ.","Setelah ini aku tidak akan terlambat."]
+]
+},
+
+{
+arabic:"وَمَاذَا بَعْدَ ذَلِكَ؟",
+meaning:"Setelah itu / lalu apa?",
+examples:[
+["وَمَاذَا بَعْدَ ذَلِكَ؟","Setelah itu lalu apa?"],
+["مَاذَا فَعَلْتَ بَعْدَ ذَلِكَ؟","Apa yang kamu lakukan setelah itu?"]
+]
+},
+
+{
+arabic:"حَاضِرٌ!",
+meaning:"Siap",
+examples:[
+["حَاضِرٌ يَا أُسْتَاذُ!","Siap, Ustaz!"],
+["هَلْ أَنْتَ جَاهِزٌ؟ حَاضِرٌ!","Apakah kamu siap? Siap!"]
+]
+},
+
+{
+arabic:"مَنْ أَيْضًا",
+meaning:"Siapa lagi",
+examples:[
+["مَنْ أَيْضًا لَمْ يَحْضُرْ؟","Siapa lagi yang tidak hadir?"],
+["مَنْ أَيْضًا يُرِيدُ؟","Siapa lagi yang mau?"]
+]
+},
+
+{
+arabic:"أَيًّا كَانَ",
+meaning:"Siapapun",
+examples:[
+["أَيًّا كَانَ مُشْرِفُكَ فَاحْتَرِمْهُ.","Siapapun pembimbingmu, hormatilah dia."],
+["أَيًّا كَانَ السَّبَبُ لَا تَكْذِبْ.","Apapun alasannya, jangan berbohong."]
+]
+},
+
+{
+arabic:"مَنْ يَدْرِي؟",
+meaning:"Siapa tahu",
+examples:[
+["مَنْ يَدْرِي؟ رُبَّمَا هُوَ فِي الْبَيْتِ.","Siapa tahu? Mungkin dia di rumah."],
+["مَنْ يَدْرِي؟ لَعَلَّهُ يَأْتِي.","Siapa tahu? Mungkin dia datang."]
+]
+},
+
+{
+arabic:"يَوْمًا مَا",
+meaning:"Suatu hari",
+examples:[
+["سَأَنْجَحُ يَوْمًا مَا.","Suatu hari aku akan berhasil."],
+["سَأَزُورُ مَكَّةَ يَوْمًا مَا.","Suatu hari aku akan mengunjungi Makkah."]
+]
+},
+
+{
+arabic:"طَبْعًا",
+meaning:"Sudah tentu",
+examples:[
+["طَبْعًا سَآتِي.","Sudah tentu aku akan datang."],
+["طَبْعًا هَذَا صَحِيحٌ.","Sudah tentu ini benar."]
+]
+},
+
+{
+arabic:"حَانَ الْوَقْتُ",
+meaning:"Sudah waktunya",
+examples:[
+["حَانَ الْوَقْتُ لِلصَّلَاةِ.","Sudah waktunya shalat."],
+["حَانَ الْوَقْتُ لِنَنْصَرِفَ.","Sudah waktunya kita pergi."]
+]
+},
+
+{
+arabic:"فَجْأَةً",
+meaning:"Tiba-tiba",
+examples:[
+["اِنْقَطَعَتِ الْكَهْرَبَاءُ فَجْأَةً.","Listrik tiba-tiba mati."],
+["ظَهَرَ فَجْأَةً.","Dia muncul tiba-tiba."],
+["سَكَتَ فَجْأَةً.","Dia tiba-tiba diam."]
+]
+},
+
+{
+arabic:"بِالْمُصَادَفَةِ",
+meaning:"Tanpa sengaja",
+examples:[
+["مَرَرْتُ أَمَامَ بَيْتِكَ بِالْمُصَادَفَةِ.","Aku lewat depan rumahmu tanpa sengaja."],
+["لَقِيتُهُ بِالْمُصَادَفَةِ.","Aku bertemu dengannya tanpa sengaja."]
+]
+},
+
+{
+arabic:"أَكِيدٌ أَنَّ",
+meaning:"Tentu",
+examples:[
+["أَكِيدٌ أَنَّهُ سَيَأْتِي.","Tentu dia akan datang."],
+["أَكِيدٌ أَنَّ هَذَا حَقٌّ.","Tentu ini benar."]
+]
+},
+
+{
+arabic:"بِالطَّبْعِ",
+meaning:"Tentu saja",
+examples:[
+["بِالطَّبْعِ سَأُسَاعِدُكَ.","Tentu saja aku akan membantumu."],
+["بِالطَّبْعِ هَذَا مُمْكِنٌ.","Tentu saja ini mungkin."]
+]
+},
+
+{
+arabic:"فِي الْمَوْعِدِ",
+meaning:"Tepat waktu",
+examples:[
+["جَاءَ فِي الْمَوْعِدِ.","Dia datang tepat waktu."],
+["اُحْضُرْ فِي الْمَوْعِدِ.","Datanglah tepat waktu."]
+]
+},
+
+{
+arabic:"تَعَوَّدَ",
+meaning:"Terbiasa",
+examples:[
+["تَعَوَّدْتُ الْاِسْتِيقَاظَ مُبَكِّرًا.","Aku terbiasa bangun pagi."],
+["تَعَوَّدْتُ عَلَى الصَّبْرِ.","Aku terbiasa bersabar."]
+]
+},
+
+{
+arabic:"فَإِذَا بِـ / فَإِذَا",
+meaning:"Ternyata",
+examples:[
+["ظَنَنْتُهَا تَضْحَكُ فَإِذَا هِيَ تَبْكِي.","Kukira dia tertawa, ternyata dia menangis."],
+["حَسِبْتُهُ نَائِمًا فَإِذَا هُوَ مُسْتَيْقِظٌ.","Kukira dia tidur, ternyata dia bangun."]
+]
+},
+
+{
+arabic:"لَنْ ... إِلَّا ...",
+meaning:"Tidak akan ... kecuali",
+examples:[
+["لَنْ تَنْجَحَ إِلَّا بِالِاجْتِهَادِ.","Kamu tidak akan berhasil kecuali dengan bersungguh-sungguh."],
+["لَنْ تَفْهَمَ إِلَّا إِذَا رَكَّزْتَ.","Kamu tidak akan memahami kecuali jika fokus."]
+]
+},
+
+{
+arabic:"غَنِيٌّ عَنْ",
+meaning:"Tak perlu",
+examples:[
+["هَذَا غَنِيٌّ عَنِ التَّعْرِيفِ.","Ini tak perlu penjelasan."],
+["أَنْتَ غَنِيٌّ عَنْ هَذَا.","Kamu tak perlu ini."]
+]
+},
+
+{
+arabic:"لَا حَرَجَ عَلَى",
+meaning:"Tidak apa-apa",
+examples:[
+["لَا حَرَجَ عَلَيْكَ.","Tidak apa-apa bagimu."],
+["لَا حَرَجَ.","Tidak apa-apa."]
+]
+},
+
+{
+arabic:"لَيْسَ عَلَى",
+meaning:"Tidak harus",
+examples:[
+["لَيْسَ عَلَيْكَ أَنْ تَفْعَلَ هَذَا.","Kamu tidak harus melakukan ini."],
+["لَيْسَ عَلَيْنَا أَنْ نَخَافَ.","Kita tidak harus takut."]
+]
+},
+
+{
+arabic:"عَمَّا قَلِيلٍ",
+meaning:"Tidak lama lagi",
+examples:[
+["سَيَأْتِي عَمَّا قَلِيلٍ.","Dia akan datang tidak lama lagi."],
+["سَنَلْتَقِي عَمَّا قَلِيلٍ.","Kita akan bertemu tidak lama lagi."]
+]
+},
+
+{
+arabic:"مِنْ غَيْرِ الْمُحْتَمَلِ",
+meaning:"Tidak mungkin",
+examples:[
+["مِنْ غَيْرِ الْمُحْتَمَلِ أَنْ يَكْذِبَ.","Tidak mungkin dia berbohong."],
+["هَذَا مِنْ غَيْرِ الْمُحْتَمَلِ.","Ini tidak mungkin."]
+]
+},
+
+{
+arabic:"لَا يَهُمُّ",
+meaning:"Tidak penting",
+examples:[
+["هَذَا لَا يَهُمُّنِي.","Ini tidak penting bagiku."],
+["لَا يَهُمُّ مَاذَا يَقُولُونَ.","Tidak penting apa yang mereka katakan."]
+]
+},
+
+{
+arabic:"لَا يَلْزَمُ أَنْ",
+meaning:"Tidak harus / perlu",
+examples:[
+["لَا يَلْزَمُ أَنْ تَأْتِيَ.","Kamu tidak harus datang."],
+["لَا يَلْزَمُ أَنْ تَدْفَعَ الْآنَ.","Kamu tidak perlu membayar sekarang."]
+]
+},
+
+{
+arabic:"مَا سَبَقَ أَنْ",
+meaning:"Tidak pernah",
+examples:[
+["مَا سَبَقَ أَنْ رَأَيْتُهُ.","Aku tidak pernah melihatnya."],
+["مَا سَبَقَ أَنْ كَذَبْتُ.","Aku tidak pernah berbohong."]
+]
+},
+
+{
+arabic:"لَا مَعْنَى لَهُ",
+meaning:"Tidak ada artinya",
+examples:[
+["لَا مَعْنَى لَهُ أَنْ تَغْضَبَ.","Tidak ada artinya kamu marah."],
+["كَلَامُهُ لَا مَعْنَى لَهُ.","Perkataannya tidak ada artinya."]
+]
+},
+
+{
+arabic:"لَا دَاعِيَ لِـ",
+meaning:"Tidak perlu / tidak usah",
+examples:[
+["لَا دَاعِيَ لِلْقَلَقِ.","Tidak perlu khawatir."],
+["لَا دَاعِيَ لِلْخَوْفِ.","Tidak perlu takut."]
+]
+},
+
+{
+arabic:"عُمُومًا",
+meaning:"Umumnya",
+examples:[
+["عُمُومًا النَّاسُ تُحِبُّ الرَّاحَةَ.","Umumnya manusia menyukai kenyamanan."],
+["عُمُومًا الطُّلَّابُ مُجْتَهِدُونَ.","Umumnya para siswa rajin."]
+]
+},
+
+{
+arabic:"لِلْمَرَّةِ الْأُولَى",
+meaning:"Untuk pertama kali",
+examples:[
+["جِئْتُ لِلْمَرَّةِ الْأُولَى.","Aku datang untuk pertama kali."],
+["رَأَيْتُهُ لِلْمَرَّةِ الْأُولَى.","Aku melihatnya untuk pertama kali."]
+]
+},
+
+{
+arabic:"لِبَعْضِ الْوَقْتِ",
+meaning:"Untuk sementara waktu",
+examples:[
+["سَأُسَافِرُ لِبَعْضِ الْوَقْتِ.","Aku akan bepergian untuk sementara waktu."],
+["أُغْلِقَ الْمَحَلُّ لِبَعْضِ الْوَقْتِ.","Toko ditutup untuk sementara waktu."]
+]
+},
+
+{
+arabic:"لِحُسْنِ الْحَظِّ",
+meaning:"Untungnya",
+examples:[
+["لِحُسْنِ الْحَظِّ نَجَحْتُ.","Untungnya aku berhasil."],
+["لِحُسْنِ الْحَظِّ وَجَدْتُهُ.","Untungnya aku menemukannya."]
+]
+},
+
+{
+arabic:"مِنَ الطَّبِيعِيِّ",
+meaning:"Wajar",
+examples:[
+["مِنَ الطَّبِيعِيِّ أَنْ تَتْعَبَ.","Wajar jika kamu lelah."],
+["هَذَا مِنَ الطَّبِيعِيِّ.","Ini wajar."]
+]
+},
+
+{
+arabic:"قِيلَ إِنَّ",
+meaning:"Yang katanya",
+examples:[
+["قِيلَ إِنَّهُ مَرِيضٌ.","Katanya dia sakit."],
+["قِيلَ إِنَّ الْاِمْتِحَانَ سَهْلٌ.","Katanya ujian itu mudah."]
+]
+},
+
+{
+arabic:"الْمُهِمُّ لَيْسَ... وَلَكِنْ",
+meaning:"Yang penting bukan... tapi",
+examples:[
+["الْمُهِمُّ لَيْسَ الْأَقْوَالَ بَلِ الْأَفْعَالَ.","Yang penting bukan perkataan, tapi perbuatan."],
+["الْمُهِمُّ لَيْسَ الْمَالَ بَلِ الْأَخْلَاقَ.","Yang penting bukan harta, tapi akhlak."]
+]
+},
+
+{
+arabic:"الْمُرَادُ / يُرَادُ / الَّذِي يُرَادُ",
+meaning:"Yang mau di...",
+examples:[
+["مَا الْمُرَادُ مِنْ هَذَا؟","Apa yang dimaksud dari ini?"],
+["هَذَا هُوَ الَّذِي يُرَادُ.","Ini yang dimaksud."]
+]
+},
+
+{
+arabic:"أَوَّلُ مَا / مَنْ",
+meaning:"Yang pertama",
+examples:[
+["أَنْتَ أَوَّلُ مَنْ جَاءَ.","Kamu adalah orang pertama yang datang."],
+["هَذَا أَوَّلُ مَا فَعَلْتُ.","Ini adalah hal pertama yang aku lakukan."]
+]
+}
+
+];
+
+
+/* =====================================================
+   MUTALAAH
+===================================================== */
+
+let indexMutalaah = 0;
+
+function tampilMutalaah(){
+
+    let item = data[indexMutalaah];
+
+    document.getElementById("counterMutalaah").innerText =
+        (indexMutalaah + 1) + " / " + data.length;
+
+    document.getElementById("arabicMutalaah").innerText =
+        item.arabic;
+
+    document.getElementById("meaningMutalaah").innerText =
+        item.meaning;
+
+    let html = "";
+
+    item.examples.forEach((contoh,i)=>{
+
+        html += `
+        <div class="example">
+
+            <b>Contoh ${i+1}</b>
+
+            <div class="example-arabic">
+                ${contoh[0]}
+            </div>
+
+            <div class="translation">
+                ${contoh[1]}
+            </div>
+
+        </div>
+        `;
+
+    });
+
+    document.getElementById("examples").innerHTML = html;
+}
+
+function nextMaterial(){
+
+    indexMutalaah++;
+
+    if(indexMutalaah >= data.length){
+        indexMutalaah = 0;
+    }
+
+    tampilMutalaah();
+}
+
+function previousMaterial(){
+
+    indexMutalaah--;
+
+    if(indexMutalaah < 0){
+        indexMutalaah = data.length - 1;
+    }
+
+    tampilMutalaah();
+}
+
+
+/* =====================================================
+   NGELALAR
+===================================================== */
+
+let indexLalar = 0;
+
+function tampilLalar(){
+
+    let item = data[indexLalar];
+
+    document.getElementById("counterNgelalar").innerText =
+        (indexLalar + 1) + " / " + data.length;
+
+    document.getElementById("arabicNgelalar").innerText =
+        item.arabic;
+
+    document.getElementById("answerNgelalar").innerText =
+        item.meaning;
+
+    document.getElementById("answerNgelalar")
+        .classList.add("hidden");
+}
+
+function showAnswer(){
+
+    document.getElementById("answerNgelalar")
+        .classList.remove("hidden");
+}
+
+function nextLalar(){
+
+    indexLalar++;
+
+    if(indexLalar >= data.length){
+        indexLalar = 0;
+    }
+
+    tampilLalar();
+}
+
+function previousLalar(){
+
+    indexLalar--;
+
+    if(indexLalar < 0){
+        indexLalar = data.length - 1;
+    }
+
+    tampilLalar();
+}
+
+
+/* =====================================================
+   TAB
+===================================================== */
+
+function openTab(number){
+
+    document.querySelectorAll(".panel")
+        .forEach(panel => panel.classList.remove("active"));
+
+    document.querySelectorAll(".tabs button")
+        .forEach(button => button.classList.remove("active"));
+
+    document.getElementById("panel"+number)
+        .classList.add("active");
+
+    document.getElementById("tab"+number)
+        .classList.add("active");
+
+    if(number === 1){
+        tampilMutalaah();
+    }
+
+    if(number === 2){
+        tampilLalar();
+    }
+
+    if(number === 3){
+        mulaiTes();
+    }
+}
+
+
+/* =====================================================
+   TES
+===================================================== */
+
+let nomorSoal = 0;
+let nilai = 0;
+let soalTes = [];
+let tesSudahMulai = false;
+
+function mulaiTes(){
+
+    if(tesSudahMulai){
+        return;
+    }
+
+    tesSudahMulai = true;
+
+    soalTes = [...data]
+        .sort(()=>Math.random()-0.5)
+        .slice(0,20);
+
+    tampilSoal();
+}
+
+function tampilSoal(){
+
+    if(nomorSoal >= 20){
+
+        document.getElementById("counterTes").innerText =
+            "Tes selesai";
+
+        document.getElementById("question").innerHTML = "";
+
+        document.getElementById("result")
+            .classList.remove("hidden");
+
+        document.getElementById("result").innerHTML = `
+
+            <div>Nilai Kamu</div>
+
+            <div class="score">
+                ${nilai} / 20
+            </div>
+
+            <p>
+                ${
+                    nilai >= 18
+                    ? "MasyaAllah, sangat bagus! 🌟"
+                    : nilai >= 15
+                    ? "Bagus! Tinggal lebih sering murajaah. 👍"
+                    : nilai >= 10
+                    ? "Lumayan. Mutalaah dan ngelalar lagi. 📚"
+                    : "Tidak apa-apa. Ulangi materi sampai hafal. 💪"
+                }
+            </p>
+
+            <button
+                class="main-button"
+                onclick="ulangTes()">
+                🔄 Ulangi Tes
+            </button>
+
+        `;
+
+        return;
+    }
+
+
+    let item = soalTes[nomorSoal];
+
+    document.getElementById("counterTes").innerText =
+        "Soal " + (nomorSoal + 1) + " / 20";
+
+
+    let pilihan = [item.meaning];
+
+
+    while(pilihan.length < 4){
+
+        let acak =
+            data[Math.floor(Math.random()*data.length)].meaning;
+
+        if(!pilihan.includes(acak)){
+            pilihan.push(acak);
+        }
+
+    }
+
+
+    pilihan.sort(()=>Math.random()-0.5);
+
+
+    let html = `
+
+        <div class="arabic">
+            ${item.arabic}
+        </div>
+
+        <p style="text-align:center">
+            Apa arti uslub di atas?
+        </p>
+
+        <div class="options">
+
+    `;
+
+
+    pilihan.forEach((p)=>{
+
+        html += `
+
+            <label>
+                <input
+                    type="radio"
+                    name="jawaban"
+                    value="${p}">
+                ${p}
+            </label>
+
+        `;
+
+    });
+
+
+    html += `
+
+        </div>
+
+        <button
+            class="main-button"
+            onclick="jawab()">
+            Jawab
+        </button>
+
+    `;
+
+
+    document.getElementById("question").innerHTML = html;
+
+}
+
+
+function jawab(){
+
+    let pilihan =
+        document.querySelector(
+            'input[name="jawaban"]:checked'
+        );
+
+
+    if(!pilihan){
+
+        alert("Pilih jawaban dulu.");
+
+        return;
+    }
+
+
+    if(
+        pilihan.value ===
+        soalTes[nomorSoal].meaning
+    ){
+
+        nilai++;
+
+    }
+
+
+    nomorSoal++;
+
+    tampilSoal();
+
+}
+
+
+function ulangTes(){
+
+    nomorSoal = 0;
+
+    nilai = 0;
+
+    tesSudahMulai = false;
+
+    soalTes = [];
+
+    document.getElementById("result")
+        .classList.add("hidden");
+
+    mulaiTes();
+
+}
+
+
+/* =====================================================
+   MULAI
+===================================================== */
+
+tampilMutalaah();
+tampilLalar();
+
+</script>
+
+</body>
+</html>
